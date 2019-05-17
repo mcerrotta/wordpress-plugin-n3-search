@@ -128,7 +128,7 @@ class N3_Search_Search
     function execute()
     {
         $query = $this->parseSelect() . $this->parseFrom() . $this->parseWhere() . $this->parseOrderBy() . $this->parseOffset() .  $this->parseLimit();
-echo $query;
+
         global $wpdb;
         $r = $wpdb->get_results( $query, ARRAY_A );
         if ($r === false || $wpdb->last_error !== '') {
