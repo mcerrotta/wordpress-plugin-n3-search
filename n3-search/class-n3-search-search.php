@@ -6,7 +6,7 @@ class N3_Search_Search
     private $select = [];
     private $where = [];
     private $limit = 20;
-    private $offset = null;
+    private $offset = 0;
 
     function __construct()
     {
@@ -218,7 +218,7 @@ echo $query;
 
     private function parseLimit()
     {
-        if ($this->offset == null || $this->offset == false || $this->limit == null || $this->limit == false) {
+        if ($this->offset === false || $this->limit === false) {
             return '';
         }
         return " FETCH NEXT " . $this->limit . " ROWS ONLY ";
@@ -226,7 +226,7 @@ echo $query;
 
     private function parseOffset()
     {
-        if ($this->limit == null || $this->limit == false || $this->offset == null || $this->offset == false) {
+        if ($this->offset === false || $this->limit === false) {
             return '';
         }
         return " OFFSET " . $this->offset . " ROWS ";
