@@ -176,16 +176,16 @@ class N3_Search_Search
 
             if ($column_type == N3_Search_Column_Type::TypeInt) {
                 if (is_array($value)) {
-                    $r .= " " . $conector . " " . $column_name . " IN [";
+                    $r .= " " . $conector . " " . $column_name . " IN (";
                     $first = true;
                     foreach ($value as $v) {
                         if (!$first) {
-                            $first = false;
                             $r .= ",";
                         }
-                        $r .= $value;
+                        $first = false;
+                        $r .= $v;
                     }
-                    $r .= "]";
+                    $r .= ")";
                 } else {
                     $r .= " " . $conector . " " . $column_name . " = " . $value;
                 }
@@ -194,11 +194,12 @@ class N3_Search_Search
             if ($column_type == N3_Search_Column_Type::TypeVarchar) {
                 if (is_array($value)) {
                     $r .= " " . $conector . " (";
+                    $first = true;
                     foreach ($value as $v) {
                         if (!$first) {
-                            $first = false;
                             $r .= " OR ";
                         }
+                        $first = false;
                         $r .= $column_name . " = '" . $v . "'";
                     }
                     $r .= ")";

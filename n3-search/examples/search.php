@@ -5,7 +5,7 @@
 global $N3_Search;
 $N3_Search->where([
 	['id_regimen', 'PR'],
-	['id_unidad_academica', 32],
+	['id_unidad_academica', [32, 33]],
 ]);
 $N3_Search->limit(10);
 $N3_Search->offset(10);
@@ -17,7 +17,7 @@ $N3_Search_Result = $N3_Search->execute();
 
 global $N3_Search;
 $N3_Search->where([
-	['id_regimen', 'PR'],
+	['id_regimen', ['PR', 'PU']],
     ['id_unidad_academica', 448],
     ['id_universidad', 32],
 ]);
