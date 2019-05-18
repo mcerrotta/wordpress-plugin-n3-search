@@ -113,16 +113,30 @@ class N3_Search_Search_Utils
     }
 
     /**
+     * @param array of id_universidad
      * @return array Map with id and descriptions order by description
      *      [
      *          '253' => 'Rectorado',
      *          '869' => 'Facultad de Ingenieria...',
      *      ]
      */
-    public function getUnidadAcademica()
+    public function getUnidadAcademica($universidades = [])
     {
+        $where = "";
+        if (!empty($universidades)) {
+            $where = "WHERE id_universidad IN (";
+            $first = true;
+            foreach ($universidades as $u) {
+                if (!$first) {
+                    $where .= ",";
+                }
+                $first = false;
+                $where .= $u;
+            }
+            $where .= ")";
+        }
         global $wpdb;
-        $r = $wpdb->get_results( 'SELECT DISTINCT id_unidad_academica, unidad_academica FROM cursos ORDER BY unidad_academica', ARRAY_A );
+        $r = $wpdb->get_results( "SELECT DISTINCT id_unidad_academica, unidad_academica FROM cursos " . $where . " ORDER BY unidad_academica", ARRAY_A );
         if ($r === false || $wpdb->last_error !== '') {
             throw new \Exception();
         }
@@ -155,16 +169,30 @@ class N3_Search_Search_Utils
     }
 
     /**
+     * @param array of id_provincia
      * @return array Map with id and descriptions order by description
      *      [
-     *          1900 => 'La Plata',
-     *          1925 => 'Ensenada',
+     *          'La Plata' => 'La Plata',
+     *          'Ensenada' => 'Ensenada',
      *      ]
      */
-    public function getLocalidad()
+    public function getLocalidad($provincias = [])
     {
+        $where = "";
+        if (!empty($provincias)) {
+            $where = "WHERE id_provincia IN (";
+            $first = true;
+            foreach ($provincias as $p) {
+                if (!$first) {
+                    $where .= ",";
+                }
+                $first = false;
+                $where .= "'" . $p . "'";
+            }
+            $where .= ")";
+        }
         global $wpdb;
-        $r = $wpdb->get_results( 'SELECT DISTINCT localidad FROM cursos ORDER BY localidad', ARRAY_A );
+        $r = $wpdb->get_results( "SELECT DISTINCT localidad FROM cursos " . $where . " ORDER BY localidad", ARRAY_A );
         if ($r === false || $wpdb->last_error !== '') {
             throw new \Exception();
         }
